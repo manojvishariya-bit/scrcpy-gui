@@ -1155,11 +1155,17 @@ fn build_scrcpy_args(config: &ScrcpyConfig, video_dir_fallback: Option<String>, 
         }
         
         let audio_enabled = config.audio_enabled.unwrap_or(true);
-        if !audio_enabled { args.push("--no-audio".to_string()); }
-        if audio_enabled {
-            if let Some(codec) = resolve_audio_codec_flag(config, audio_codec_override) {
-                args.push(format!("--audio-codec={}", codec));
-            }
+        if !audio_enabled {
+        args.push("--no-audio".to_string());
+        }
+
+                    if audio_enabled {
+          args.push("--audio-dup".to_string());
+
+        if let Some(codec) = resolve_audio_codec_flag(config, audio_codec_override) {
+        args.push(format!("--audio-codec={}", codec));
+                                    }
+         }
         }
         if let Some(aot) = config.always_on_top { if aot { args.push("--always-on-top".to_string()); } }
         if let Some(fs) = config.fullscreen { if fs { args.push("--fullscreen".to_string()); } }
